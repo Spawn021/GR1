@@ -10,9 +10,6 @@ function DefaultLayout({ children }) {
       case '/':
          contentHeight = '3500px';
          break;
-      case '/cart':
-         contentHeight = '3000px';
-         break;
       default:
          contentHeight = 'auto';
          break;

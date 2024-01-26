@@ -159,9 +159,9 @@ export default function LabTabs() {
                         height="400"
                         src="https://www.youtube.com/embed/M7SO5DdsPjs?si=lxSZqMSpo6eD9wmF"
                         title="Cắm trại cùng OTSV 2022"
-                        frameborder="0"
+                        frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen=""
+                        allowFullScreen=""
                      ></iframe>
                   </div>
                   <div className={cx('item')}>

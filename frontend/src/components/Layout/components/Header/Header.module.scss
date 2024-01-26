@@ -39,7 +39,8 @@
    font-weight: 700;
 }
 
-.header__navbar-item-link:hover {
+.header__navbar-item-link:hover,
+.header__navbar-item-link:focus {
    color: #e10422;
 }
 

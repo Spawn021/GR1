@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
 import styles from './Header.module.scss';
 
 import Logo from '~/assets/images/logo.jpg';
@@ -62,9 +62,9 @@ function Header() {
                      )}
                   >
                      {/* eslint-disable-next-line */}
-                     <a href="" className={cx('header__navbar-item-link')}>
+                     <Link smooth to="/#member" className={cx('header__navbar-item-link')}>
                         MEMBER
-                     </a>
+                     </Link>
                      <div className={cx('header__member')}>
                         <ul className={cx('header__member-list')}>
                            <li className={cx('header__member-item')}>
@@ -119,28 +119,28 @@ function Header() {
                      </div>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     {/* eslint-disable-next-line */}
-                     <a href="" className={cx('header__navbar-item-link')}>
+                     <Link to="/research" className={cx('header__navbar-item-link')} style={{ textDecoration: 'none' }}>
                         RESEARCH
-                     </a>
+                     </Link>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     {/* eslint-disable-next-line */}
-                     <a href="" className={cx('header__navbar-item-link')}>
+                     <Link
+                        to="/publication"
+                        className={cx('header__navbar-item-link')}
+                        style={{ textDecoration: 'none' }}
+                     >
                         PUBLICATION
-                     </a>
+                     </Link>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     {/* eslint-disable-next-line */}
-                     <a href="" className={cx('header__navbar-item-link')}>
+                     <Link to="/news" className={cx('header__navbar-item-link')} style={{ textDecoration: 'none' }}>
                         NEWS
-                     </a>
+                     </Link>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     {/* eslint-disable-next-line */}
-                     <a href="" className={cx('header__navbar-item-link')}>
-                        CONTACTS
-                     </a>
+                     <Link to="/contact" className={cx('header__navbar-item-link')} style={{ textDecoration: 'none' }}>
+                        CONTACT
+                     </Link>
                   </li>
                </ul>
             </div>

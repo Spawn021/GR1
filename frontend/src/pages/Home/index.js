@@ -1,7 +1,5 @@
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import SwiperMember from './components/SwiperMember/SwiperMember';
 import SwiperComponent from './components/Swiper/Swiper';
 import ListItemCount from './components/ListItemCount/ListItemCount';
@@ -94,13 +92,13 @@ function Home() {
                         className={cx('panel-iframe')}
                         src="https://www.youtube.com/embed/M7SO5DdsPjs?si=lxSZqMSpo6eD9wmF"
                         title="YouTube video player"
-                        frameborder="0"
+                        frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
+                        allowFullScreen
                      ></iframe>
                   </div>
                </div>
-               <div className={cx('panel-feedback')}>
+               <div id="member" className={cx('panel-feedback')}>
                   <div className={cx('feedback-container')}>
                      <h3>Member Of Lab</h3>
                   </div>

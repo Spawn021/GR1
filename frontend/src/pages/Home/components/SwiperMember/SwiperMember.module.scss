@@ -3,20 +3,7 @@
    height: 100%;
    margin-top: 65px;
 }
-.image-item {
-   margin-top: 35px;
-   width: 255px;
-   height: 300px;
-   top: 0;
-   left: 0;
-   border-radius: 0 15px 15px 15px;
-   display: block;
-   object-fit: cover;
-   position: relative;
-   transition: 0.5s;
-}
-.container::before {
-   content: 'Hồ Huệ';
+.name {
    position: absolute;
    top: 33px;
    left: 0;
@@ -31,34 +18,41 @@
    font-size: 15px;
    transition: 0.5s;
 }
-.container:hover .image-item {
-   transform: scale(1.1); /* Tăng kích thước ảnh khi hover */
-}
-.image-item:hover,
-.container:hover::before {
-   box-shadow: 2px 8px 10px #ced6e1;
+.image-item {
+   margin-top: 35px;
+   width: 255px;
+   height: 300px;
+   top: 0;
+   left: 0;
+   border-radius: 0 15px 15px 15px;
+   display: block;
+   object-fit: cover;
+   position: relative;
    transition: 0.5s;
 }
-.container:hover::before {
-   transform: scale(1.1); /* Tăng kích thước phần tử ::before khi hover */
+.container:hover .image-item {
+   transform: scale(1.1);
+}
+.container:hover .name {
+   transform: scale(1.1);
    position: absolute;
    top: 15px;
-   left: -6px;
+   left: -4px;
    background-color: #e10422;
    color: #fff;
 }
-@media (max-width: 576px) {
-   .image-item {
-      width: 100px;
-   }
-   .container::before {
-      width: 60px;
-      top: 40px;
-      padding: 5px 17px;
-      font-size: 12px;
-   }
-   .container:hover::before {
-      left: 0px;
-      top: 22px;
-   }
+
+.image-item:hover,
+.name:hover {
+   box-shadow: 2px 8px 10px #ced6e1;
+   transition: 0.5s;
+}
+
+.name:hover {
+   transform: scale(1.1);
+   position: absolute;
+   top: 15px;
+   left: -4px;
+   background-color: #e10422;
+   color: #fff;
 }

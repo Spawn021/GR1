@@ -1,5 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import SwiperMember from './components/SwiperMember/SwiperMember';
 import SwiperComponent from './components/Swiper/Swiper';
 import ListItemCount from './components/ListItemCount/ListItemCount';
@@ -101,6 +103,12 @@ function Home() {
                <div id="member" className={cx('panel-feedback')}>
                   <div className={cx('feedback-container')}>
                      <h3>Member Of Lab</h3>
+                  </div>
+                  <div className={cx('form-search')}>
+                     <input className={cx('input-search')} placeholder="Search member..."></input>
+                     <button className={cx('button-search')}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} />
+                     </button>
                   </div>
                   <div className={cx('slide-feedback')}>
                      <SwiperMember />

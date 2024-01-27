@@ -27,7 +27,20 @@ function App() {
                               <Page />
                            </Layout>
                         }
-                     />
+                     >
+                        {route.children &&
+                           route.children.map((childRoute, childIndex) => (
+                              <Route
+                                 key={childIndex}
+                                 path={childRoute.path}
+                                 element={
+                                    <Layout>
+                                       <Page />
+                                    </Layout>
+                                 }
+                              />
+                           ))}
+                     </Route>
                   );
                })}
             </Routes>

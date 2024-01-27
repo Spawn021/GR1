@@ -1,4 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Link } from 'react-router-dom';
 import 'swiper/swiper-bundle.css';
 import { Pagination } from 'swiper/modules';
 import classNames from 'classnames/bind';
@@ -29,15 +30,17 @@ export default function SwiperMember() {
          className="mySwiperSlide"
       >
          <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://soict.hust.edu.vn/wp-content/uploads/TrinhVanChien.png"
-                  alt="ImageMember"
-               ></img>
-            </div>
+            <Link to="/member" onClick={() => window.scrollTo(0, 0)}>
+               <div className={cx('container')}>
+                  <div className={cx('name')}>Trịnh Văn Chiến</div>
+                  <img
+                     style={{ left: '0px' }}
+                     className={cx('image-item')}
+                     src="https://soict.hust.edu.vn/wp-content/uploads/TrinhVanChien.png"
+                     alt="ImageMember"
+                  ></img>
+               </div>
+            </Link>
          </SwiperSlide>
          <SwiperSlide>
             <div className={cx('container')}>

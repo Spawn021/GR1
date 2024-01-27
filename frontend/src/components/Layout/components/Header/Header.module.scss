@@ -6,6 +6,7 @@
    top: 0;
    z-index: 10;
    transition: background-color 0.3s ease;
+   border-bottom: 2px solid rgb(164, 151, 151);
 }
 .scrolled {
    background-color: #d5e2f7; /* Đổi màu sắc khi phần tử cuộn */
@@ -81,7 +82,7 @@
    content: '';
    display: block;
    position: absolute;
-   top: -30px; /* Đặt giá trị này để phần tử nằm trên đỉnh của .header__member */
+   top: -23px; /* Đặt giá trị này để phần tử nằm trên đỉnh của .header__member */
    right: 80px;
    width: 80px;
    height: 40px;

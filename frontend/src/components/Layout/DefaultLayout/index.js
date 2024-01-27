@@ -1,6 +1,6 @@
+import { useLocation } from 'react-router-dom';
 import Header from '~/components/Layout/components/Header';
 import Footer from './Footer';
-import { useLocation } from 'react-router-dom';
 
 function DefaultLayout({ children }) {
    const location = useLocation();
@@ -8,7 +8,7 @@ function DefaultLayout({ children }) {
 
    switch (location.pathname) {
       case '/':
-         contentHeight = '3500px';
+         contentHeight = '3560px';
          break;
       default:
          contentHeight = 'auto';

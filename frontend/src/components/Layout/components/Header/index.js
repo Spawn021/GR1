@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames/bind';
 import { HashLink as Link } from 'react-router-hash-link';
+import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 
 import Logo from '~/assets/images/logo.jpg';
@@ -69,9 +69,13 @@ function Header() {
                         <ul className={cx('header__member-list')}>
                            <li className={cx('header__member-item')}>
                               {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
+                              <Link
+                                 to="/member"
+                                 onClick={() => window.scrollTo(0, 0)}
+                                 className={cx('header__member-item-name')}
+                              >
                                  Trịnh Văn Chiến
-                              </a>
+                              </Link>
                            </li>
                            <li className={cx('header__member-item')}>
                               {/* eslint-disable-next-line */}
@@ -119,26 +123,45 @@ function Header() {
                      </div>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     <Link to="/research" className={cx('header__navbar-item-link')} style={{ textDecoration: 'none' }}>
+                     <Link
+                        smooth
+                        to="/research/main_research"
+                        className={cx('header__navbar-item-link')}
+                        style={{ textDecoration: 'none' }}
+                     >
                         RESEARCH
                      </Link>
                   </li>
                   <li className={cx('header__navbar-item')}>
                      <Link
+                        smooth
                         to="/publication"
                         className={cx('header__navbar-item-link')}
                         style={{ textDecoration: 'none' }}
+                        onClick={() => window.scrollTo(0, 0)}
                      >
                         PUBLICATION
                      </Link>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     <Link to="/news" className={cx('header__navbar-item-link')} style={{ textDecoration: 'none' }}>
+                     <Link
+                        smooth
+                        to="/news"
+                        className={cx('header__navbar-item-link')}
+                        style={{ textDecoration: 'none' }}
+                        onClick={() => window.scrollTo(0, 0)}
+                     >
                         NEWS
                      </Link>
                   </li>
                   <li className={cx('header__navbar-item')}>
-                     <Link to="/contact" className={cx('header__navbar-item-link')} style={{ textDecoration: 'none' }}>
+                     <Link
+                        smooth
+                        to="/contact"
+                        className={cx('header__navbar-item-link')}
+                        style={{ textDecoration: 'none' }}
+                        onClick={() => window.scrollTo(0, 0)}
+                     >
                         CONTACT
                      </Link>
                   </li>

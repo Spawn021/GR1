@@ -7,7 +7,6 @@ import styles from './SwiperMember.module.scss';
 import './custom-pagination.css';
 import { useState, useEffect } from 'react';
 import { fetchInstructorMembers } from '~/services/instructors';
-import { redirect } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 

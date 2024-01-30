@@ -85,7 +85,7 @@ function Header() {
                                  <li className={cx('header__member-item')} key={member._id}>
                                     {/* eslint-disable-next-line */}
                                     <Link
-                                       to="/member"
+                                       to={`/member/${member._id}`}
                                        onClick={() => window.scrollTo(0, 0)}
                                        className={cx('header__member-item-name')}
                                     >

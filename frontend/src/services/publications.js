@@ -1,5 +1,4 @@
 import { fetchApi } from './index';
-const fetchPublications = async (name) => {
-   return await fetchApi(`/api/publications`);
+export const fetchPublications = async (name) => {
+   return await fetchApi(`/publications`);
 };
-export default fetchPublication;

@@ -9,7 +9,7 @@ const { instructorRouter, publicationRouter } = require("./routes/index");
 var app = express();
 
 mongoose
-  .connect("mongodb://localhost:27020/test_mongo")
+  .connect("mongodb://localhost:27017/test_mongo")
   .then(() => {
     console.log("Connected to MongoDB");
   })

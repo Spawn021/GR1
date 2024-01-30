@@ -120,6 +120,10 @@
 .header__member-item-name:hover {
    text-decoration: underline;
 }
+.header__member-item:hover {
+   background-color: #f2f2f2;
+   cursor: pointer;
+}
 @keyframes change-color {
    0% {
       color: #ff0000;

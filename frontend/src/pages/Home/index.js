@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,8 +12,31 @@ import SchoolIcon from '../../assets/images/icons/truong.svg';
 import CourseIcon from '../../assets/images/icons/khoa-luyen.svg';
 import StdIcon from '../../assets/images/icons/hocvien.svg';
 import { FaFacebook } from 'react-icons/fa';
+import { fetchInstructors } from '~/services/instructors';
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 function Home() {
+   const [searchTerm, setSearchTerm] = useState('');
+   const [instructors, setInstructors] = useState([]);
+
+   useEffect(() => {
+      const fetchData = async () => {
+         const result = await fetchInstructors('');
+         setInstructors(result);
+         console.log(instructors);
+      };
+
+      fetchData();
+   }, []);
+
+   const handleSearchChange = (event) => {
+      setSearchTerm(event.target.value);
+   };
+
+   const filteredInstructors =
+      instructors &&
+      instructors.filter((instructor) => instructor.name.toLowerCase().includes(searchTerm.toLowerCase()));
+   console.log('ngu', filteredInstructors);
    return (
       <div className={cx('wrapper')}>
          <div className={cx('slide')}>
@@ -105,11 +129,32 @@ function Home() {
                      <h3>Member Of Lab</h3>
                   </div>
                   <div className={cx('form-search')}>
-                     <input className={cx('input-search')} placeholder="Search member..."></input>
+                     <input
+                        type="text"
+                        placeholder="Search instructor..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        className={cx('input-search')}
+                     />
                      <button className={cx('button-search')}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                      </button>
                   </div>
+                  {searchTerm && (
+                     <div className={cx('list-search')}>
+                        {filteredInstructors.map((instructor) => (
+                           <Link
+                              to={`/member/${instructor._id}`}
+                              style={{ textDecoration: 'none' }}
+                              onClick={() => window.scrollTo(0, 0)}
+                           >
+                              <div className={cx('item-search')} key={instructor.id}>
+                                 {instructor.name}
+                              </div>
+                           </Link>
+                        ))}
+                     </div>
+                  )}
                   <div className={cx('slide-feedback')}>
                      <SwiperMember />
                   </div>

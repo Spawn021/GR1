@@ -15,7 +15,7 @@ import PastProject from '~/pages/Research/PastProject';
 const publicRoutes = [
    { path: '/', component: Home },
    { path: '/news', component: News },
-   { path: '/member', component: Member },
+   { path: '/member/:id', component: Member },
    // { path: '/research/main_research', component: MainResearch },
    {
       path: '/research',

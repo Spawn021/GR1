@@ -5,15 +5,32 @@ import { Pagination } from 'swiper/modules';
 import classNames from 'classnames/bind';
 import styles from './SwiperMember.module.scss';
 import './custom-pagination.css';
+import { useState, useEffect } from 'react';
+import { fetchInstructorMembers } from '~/services/instructors';
+import { redirect } from 'react-router-dom';
+
 const cx = classNames.bind(styles);
 
 export default function SwiperMember() {
+   const [members, setMembers] = useState(null);
+
    const pagination = {
       clickable: true,
       renderBullet: function (index, className) {
          return '<span class="' + className + '">' + (index + 1) + '</span>';
       },
    };
+
+   useEffect(() => {
+      const getMembers = async () => {
+         const members = await fetchInstructorMembers();
+         setMembers(members);
+      };
+
+      if (!members) {
+         getMembers();
+      }
+   }, []);
 
    return (
       <Swiper
@@ -29,184 +46,22 @@ export default function SwiperMember() {
          modules={[Pagination]}
          className="mySwiperSlide"
       >
-         <SwiperSlide>
-            <Link to="/member" onClick={() => window.scrollTo(0, 0)}>
-               <div className={cx('container')}>
-                  <div className={cx('name')}>Trịnh Văn Chiến</div>
-                  <img
-                     style={{ left: '0px' }}
-                     className={cx('image-item')}
-                     src="https://soict.hust.edu.vn/wp-content/uploads/TrinhVanChien.png"
-                     alt="ImageMember"
-                  ></img>
-               </div>
-            </Link>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Huynh Thi Thanh Binh</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://soict.hust.edu.vn/wp-content/uploads/2019/08/Hu%E1%BB%B3nh-Th%E1%BB%8B-Thanh-B%C3%ACnh.jpg"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F774990213-1649217469173-tranvan.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F479012615-1649216916801-hohue.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F948541500-1649217432673-tranminhphuong.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F774990213-1649217469173-tranvan.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F479012615-1649216916801-hohue.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F948541500-1649217432673-tranminhphuong.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F774990213-1649217469173-tranvan.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F479012615-1649216916801-hohue.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F948541500-1649217432673-tranminhphuong.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F774990213-1649217469173-tranvan.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F479012615-1649216916801-hohue.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F948541500-1649217432673-tranminhphuong.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F774990213-1649217469173-tranvan.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
-         <SwiperSlide>
-            <div className={cx('container')}>
-               <div className={cx('name')}>Trịnh Văn Chiến</div>
-               <img
-                  style={{ left: '0px' }}
-                  className={cx('image-item')}
-                  src="https://onthisinhvien.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fonthisinhvien.appspot.com%2Fimages%2F479012615-1649216916801-hohue.jpg&w=1920&q=75"
-                  alt="ImageMember"
-               ></img>
-            </div>
-         </SwiperSlide>
+         {members &&
+            members.map((member) => (
+               <SwiperSlide key={member._id}>
+                  <Link to={`/member/${member._id}`} onClick={() => window.scrollTo(0, 0)}>
+                     <div className={cx('container')}>
+                        <div className={cx('name')}>{member.name}</div>
+                        <img
+                           style={{ left: '0px' }}
+                           className={cx('image-item')}
+                           src={member.image}
+                           alt="ImageMember"
+                        ></img>
+                     </div>
+                  </Link>
+               </SwiperSlide>
+            ))}
       </Swiper>
    );
 }

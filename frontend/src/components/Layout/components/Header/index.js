@@ -4,10 +4,23 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 
 import Logo from '~/assets/images/logo.jpg';
-
+import { useRadioGroup } from '@mui/material';
+import { fetchInstructorMembers } from '~/services/instructors';
 const cx = classNames.bind(styles);
 function Header() {
    const [isScrolled, setIsScrolled] = useState(false);
+   const [members, setMembers] = useState(null);
+
+   useEffect(() => {
+      const getMembers = async () => {
+         const members = await fetchInstructorMembers();
+         setMembers(members);
+      };
+
+      if (!members) {
+         getMembers();
+      }
+   }, []);
 
    useEffect(() => {
       const handleScroll = () => {
@@ -67,58 +80,19 @@ function Header() {
                      </Link>
                      <div className={cx('header__member')}>
                         <ul className={cx('header__member-list')}>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <Link
-                                 to="/member"
-                                 onClick={() => window.scrollTo(0, 0)}
-                                 className={cx('header__member-item-name')}
-                              >
-                                 Trịnh Văn Chiến
-                              </Link>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Huynh Thi Thanh Binh
-                              </a>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Trịnh Văn Chiến
-                              </a>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Trịnh Văn Chiến
-                              </a>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Trịnh Văn Chiến
-                              </a>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Trịnh Văn Chiến
-                              </a>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Trịnh Văn Chiến
-                              </a>
-                           </li>
-                           <li className={cx('header__member-item')}>
-                              {/* eslint-disable-next-line */}
-                              <a href="" className={cx('header__member-item-name')}>
-                                 Trịnh Văn Chiến
-                              </a>
-                           </li>
+                           {members &&
+                              members.map((member) => (
+                                 <li className={cx('header__member-item')} key={member._id}>
+                                    {/* eslint-disable-next-line */}
+                                    <Link
+                                       to="/member"
+                                       onClick={() => window.scrollTo(0, 0)}
+                                       className={cx('header__member-item-name')}
+                                    >
+                                       {member.name}
+                                    </Link>
+                                 </li>
+                              ))}
                         </ul>
                      </div>
                   </li>

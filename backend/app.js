@@ -5,11 +5,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 const mongoose = require("mongoose");
-const { instructorRouter, publicationRouter } = require("./routes/index");
+const { instructorRouter, publicationRouter,studentRouter } = require("./routes/index");
 var app = express();
 
 mongoose
-  .connect("mongodb://localhost:27017/test_mongo")
+  .connect("mongodb://127.0.0.1:27017/test_mongo")
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 app.use("/api/instructors", instructorRouter);
 app.use("/api/publications", publicationRouter);
-
+app.use("/api/students", studentRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

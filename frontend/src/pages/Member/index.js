@@ -16,10 +16,8 @@ function Member() {
          setMember(member);
       };
 
-      if (!member) {
-         getMember(id);
-      }
-   }, []);
+      getMember(id);
+   }, [id]);
    console.log('member', member);
    return (
       <div className={cx('wrapper')}>

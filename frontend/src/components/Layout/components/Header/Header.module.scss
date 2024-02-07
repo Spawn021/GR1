@@ -40,11 +40,15 @@
    font-weight: 700;
 }
 
-.header__navbar-item-link:hover,
-.header__navbar-item-link:focus {
+.header__navbar-item-link:hover {
    color: #e10422;
 }
-
+.header__navbar-item-link:active {
+   color: #e10422;
+}
+.active-class {
+   color: #e10422;
+}
 .header__navbar-item,
 .header__navbar-link {
    display: inline-flex;

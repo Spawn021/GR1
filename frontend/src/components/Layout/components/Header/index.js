@@ -4,13 +4,17 @@ import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
 
 import Logo from '~/assets/images/logo.jpg';
-import { useRadioGroup } from '@mui/material';
 import { fetchInstructorMembers } from '~/services/instructors';
 const cx = classNames.bind(styles);
 function Header() {
    const [isScrolled, setIsScrolled] = useState(false);
    const [members, setMembers] = useState(null);
+   const [activeLink, setActiveLink] = useState(null);
 
+   const handleLinkClick = (link) => {
+      setActiveLink(link);
+      window.scrollTo(0, 0);
+   };
    useEffect(() => {
       const getMembers = async () => {
          const members = await fetchInstructorMembers();
@@ -61,8 +65,10 @@ function Header() {
                   <li className={cx('header__navbar-item')}>
                      <Link
                         to="/"
-                        className={cx('header__navbar-item-link', 'header__navbar-home-page')}
-                        style={{ textDecoration: 'none' }}
+                        onClick={() => handleLinkClick('/')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/',
+                        })}
                      >
                         INTRODUCTION
                      </Link>
@@ -75,7 +81,14 @@ function Header() {
                      )}
                   >
                      {/* eslint-disable-next-line */}
-                     <Link smooth to="/#member" className={cx('header__navbar-item-link')}>
+                     <Link
+                        smooth
+                        to="/#member"
+                        onClick={() => handleLinkClick('/#member')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/#member',
+                        })}
+                     >
                         MEMBER
                      </Link>
                      <div className={cx('header__member')}>
@@ -100,7 +113,10 @@ function Header() {
                      <Link
                         smooth
                         to="/research/main_research"
-                        className={cx('header__navbar-item-link')}
+                        onClick={() => handleLinkClick('/research')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/research',
+                        })}
                         style={{ textDecoration: 'none' }}
                      >
                         RESEARCH
@@ -110,9 +126,11 @@ function Header() {
                      <Link
                         smooth
                         to="/publication"
-                        className={cx('header__navbar-item-link')}
+                        onClick={() => handleLinkClick('/publication')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/publication',
+                        })}
                         style={{ textDecoration: 'none' }}
-                        onClick={() => window.scrollTo(0, 0)}
                      >
                         PUBLICATION
                      </Link>
@@ -121,9 +139,11 @@ function Header() {
                      <Link
                         smooth
                         to="/news"
-                        className={cx('header__navbar-item-link')}
+                        onClick={() => handleLinkClick('/news')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/news',
+                        })}
                         style={{ textDecoration: 'none' }}
-                        onClick={() => window.scrollTo(0, 0)}
                      >
                         NEWS
                      </Link>
@@ -132,9 +152,11 @@ function Header() {
                      <Link
                         smooth
                         to="/contact"
-                        className={cx('header__navbar-item-link')}
+                        onClick={() => handleLinkClick('/contact')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/contact',
+                        })}
                         style={{ textDecoration: 'none' }}
-                        onClick={() => window.scrollTo(0, 0)}
                      >
                         CONTACT
                      </Link>

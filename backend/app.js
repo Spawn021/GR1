@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -13,8 +15,9 @@ const {
 } = require("./routes/index");
 var app = express();
 
+console.log("Connecting to MongoDB:", process.env.MONGODB_URI);
 mongoose
-  .connect("mongodb://127.0.0.1:27017/test_mongo")
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -38,6 +41,7 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  console.error("Error handler:", err);
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};

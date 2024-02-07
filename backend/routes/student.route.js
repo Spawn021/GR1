@@ -5,6 +5,7 @@ const { Student } = require("../model/student");
 // POST: Create a new student
 router.post("/", async (req, res) => {
   try {
+    console.log("req.body", req.body);
     const { name, image } = req.body;
 
     if (!name || !image) {
@@ -16,7 +17,9 @@ router.post("/", async (req, res) => {
 
     res.status(201).json(savedStudent);
   } catch (error) {
-    res.status(500).json({ message: "Error creating the student", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error creating the student", error: error.message });
   }
 });
 
@@ -26,7 +29,9 @@ router.get("/", async (req, res) => {
     const students = await Student.find({});
     res.status(200).json(students);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching students", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching students", error: error.message });
   }
 });
 
@@ -42,17 +47,23 @@ router.get("/:id", async (req, res) => {
 
     res.status(200).json(student);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching the student", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching the student", error: error.message });
   }
 });
 
 // PUT: Update a student by ID
-router.post("/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const studentId = req.params.id;
     const updateData = req.body;
 
-    const updatedStudent = await Student.findByIdAndUpdate(studentId, updateData, { new: true });
+    const updatedStudent = await Student.findByIdAndUpdate(
+      studentId,
+      updateData,
+      { new: true }
+    );
 
     if (!updatedStudent) {
       return res.status(404).json({ message: "Student not found" });
@@ -60,7 +71,23 @@ router.post("/:id", async (req, res) => {
 
     res.status(200).json(updatedStudent);
   } catch (error) {
-    res.status(500).json({ message: "Error updating the student", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating the student", error: error.message });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const newData = req.body;
+    console.log("newData", newData);
+    const newStudent = await Student.create(newData);
+
+    res.status(201).json(newStudent);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error creating the student", error: error.message });
   }
 });
 
@@ -76,7 +103,23 @@ router.delete("/:id", async (req, res) => {
 
     res.status(200).json({ message: "Student deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting the student", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error deleting the student", error: error.message });
+  }
+});
+
+router.delete("/", async (req, res) => {
+  try {
+    const ids = req.body;
+
+    const deletedStudent = await Student.deleteMany({ _id: { $in: ids } });
+
+    res.status(200).json({ message: "Students deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting the student", error: error.message });
   }
 });
 

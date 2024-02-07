@@ -2,7 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Student.module.scss';
-import { fetchStudents } from '~/services/students';
+import {
+   fetchStudents,
+   createStudentApi,
+   deleteStudentApi,
+   getStudent,
+   updateStudentApi,
+   deleteStudentsApi,
+} from '~/services/students';
 // import { useAuth } from '~/store/AuthContext';
 // import { Navigate } from 'react-router-dom';
 import { IoAddCircle } from 'react-icons/io5';
@@ -16,40 +23,76 @@ function Student() {
    // if (!isLoggedIn) {
    //    return <Navigate to="/login" />;
    // }
-   const [students, setStudents] = useState([]);
-
+   const [students, setStudents] = useState(null);
+   const [isUpdateData, setIsUpdateData] = useState(true);
+   const [isSelectCheckBoxes, setIsSelectCheckBoxes] = useState([]);
    useEffect(() => {
+      if (!isUpdateData) return;
       const fetchData = async () => {
-         const result = await fetchStudents('');
+         const result = await fetchStudents();
          setStudents(result);
-
-         console.log('abcd', students);
+         setIsUpdateData(false);
       };
 
       fetchData();
-   }, []);
+   }, [isUpdateData]);
+
+   const [updatingStudent, setUpdatingStudent] = useState(null);
 
    const [showModalAdd, setShowModalAdd] = useState(false);
+   const [selectedId, setSelectedId] = useState(null);
    const openModalAdd = () => {
       setShowModalAdd(true);
    };
    const closeModalAdd = () => {
+      setUpdatingStudent(null);
       setShowModalAdd(false);
    };
    const [showModalDelete, setShowModalDelete] = useState(false);
-   const openModalDelete = () => {
+   const openModalDelete = (id) => {
+      setSelectedId(id);
       setShowModalDelete(true);
    };
    const closeModalDelete = () => {
+      setSelectedId(null);
       setShowModalDelete(false);
    };
    const [showModalEdit, setShowModalEdit] = useState(false);
-   const openModalEdit = () => {
+   const openModalEdit = (id) => {
+      setSelectedId(id);
+      setUpdatingStudent(students.find((student) => student._id === id));
       setShowModalEdit(true);
    };
    const closeModalEdit = () => {
+      setSelectedId(null);
+      setUpdatingStudent(null);
       setShowModalEdit(false);
    };
+
+   const deleteStudent = async () => {
+      if (isSelectCheckBoxes.length > 0) {
+         await deleteStudentsApi(isSelectCheckBoxes);
+         setIsSelectCheckBoxes([]);
+      } else {
+         await deleteStudentApi(selectedId);
+      }
+      setIsUpdateData(true);
+      closeModalDelete();
+   };
+
+   const addStudent = async () => {
+      await createStudentApi(updatingStudent);
+      setIsUpdateData(true);
+      closeModalAdd();
+   };
+
+   const updateStudent = async () => {
+      await updateStudentApi(updatingStudent);
+      setIsUpdateData(true);
+      closeModalEdit();
+   };
+
+   console.log('isCheck', isSelectCheckBoxes);
    return (
       <div className={cx('content')}>
          <div className={cx('section')}>
@@ -88,7 +131,20 @@ function Student() {
                         <tr>
                            <th>
                               <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="selectAll" />
+                                 <input
+                                    type="checkbox"
+                                    id="selectAll"
+                                    checked={
+                                       isSelectCheckBoxes.length !== 0 && isSelectCheckBoxes.length === students?.length
+                                    }
+                                    onChange={(e) => {
+                                       if (e.target.checked) {
+                                          setIsSelectCheckBoxes(students.map((student) => student._id));
+                                       } else {
+                                          setIsSelectCheckBoxes([]);
+                                       }
+                                    }}
+                                 />
                                  <label for="selectAll"></label>
                               </span>
                            </th>
@@ -98,136 +154,60 @@ function Student() {
                         </tr>
                      </thead>
                      <tbody>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                                 <label for="checkbox1"></label>
-                              </span>
-                           </td>
-                           <td>Thomas Hardy</td>
-                           <td>thomashardy@mail.com</td>
+                        {students &&
+                           students?.map((student) => (
+                              <tr key={student._id}>
+                                 <td>
+                                    <span className={cx('custom-checkbox')}>
+                                       <input
+                                          type="checkbox"
+                                          id={`checkbox${student._id}`}
+                                          checked={isSelectCheckBoxes.includes(student._id)}
+                                          onChange={(e) => {
+                                             console.log('e', student._id, e.target.checked);
+                                             if (e.target.checked) {
+                                                setIsSelectCheckBoxes((prev) => {
+                                                   const newArray = [...prev];
+                                                   return newArray.concat(student._id);
+                                                });
+                                             } else {
+                                                setIsSelectCheckBoxes((prev) => {
+                                                   const newArray = [...prev];
+                                                   return newArray.filter((id) => id !== student._id);
+                                                });
+                                             }
+                                          }}
+                                       />
+                                       <label for={`checkbox${student._id}`}></label>
+                                    </span>
+                                 </td>
+                                 <td>{student.name}</td>
+                                 <td>{student.image}</td>
 
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox2" name="options[]" value="1" />
-                                 <label for="checkbox2"></label>
-                              </span>
-                           </td>
-                           <td>Dominique Perrier</td>
-                           <td>dominiqueperrier@mail.com</td>
-
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox3" name="options[]" value="1" />
-                                 <label for="checkbox3"></label>
-                              </span>
-                           </td>
-                           <td>Maria Anders</td>
-                           <td>mariaanders@mail.com</td>
-
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox4" name="options[]" value="1" />
-                                 <label for="checkbox4"></label>
-                              </span>
-                           </td>
-                           <td>Fran Wilson</td>
-                           <td>franwilson@mail.com</td>
-
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox5" name="options[]" value="1" />
-                                 <label for="checkbox5"></label>
-                              </span>
-                           </td>
-                           <td>Martin Blank</td>
-                           <td>martinblank@mail.com</td>
-
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
+                                 <td className={cx('icon-action')}>
+                                    <div className={cx('icons-hover')} onClick={openModalEdit.bind(this, student._id)}>
+                                       <i className={cx('icons-edit')}>
+                                          <CiEdit />
+                                       </i>
+                                       <div className={cx('edit')}>Edit</div>
+                                    </div>
+                                    <div
+                                       className={cx('icons-hover')}
+                                       onClick={openModalDelete.bind(this, student._id)}
+                                    >
+                                       <i className={cx('icons-delete')}>
+                                          <MdDelete />
+                                       </i>
+                                       <div className={cx('delete')}>Delete</div>
+                                    </div>
+                                 </td>
+                              </tr>
+                           ))}
                      </tbody>
                   </table>
                   <div className={cx('clearfix')}>
                      <div className={cx('hint-text')}>
-                        Showing <b>5</b> out of <b>25</b> entries
+                        Showing <b>{students?.length}</b> out of <b>{students?.length}</b> entries
                      </div>
                      <ul className={cx('pagination')}>
                         <li className={cx('page-item-pre')}>
@@ -281,18 +261,31 @@ function Student() {
                         <div className={cx('modal-body')}>
                            <div className={cx('form-group')}>
                               <label>Name:</label>
-                              <input type="text" placeholder="Enter Student's name" required></input>
+                              <input
+                                 type="text"
+                                 placeholder="Enter Student's name"
+                                 required
+                                 value={updatingStudent?.name || ''}
+                                 onChange={(e) => setUpdatingStudent((prev) => ({ ...prev, name: e.target.value }))}
+                              ></input>
                            </div>
                            <div className={cx('form-group')}>
                               <label>Image:</label>
-                              <textarea placeholder="Enter image's link" required></textarea>
+                              <textarea
+                                 placeholder="Enter image's link"
+                                 required
+                                 value={updatingStudent?.image || ''}
+                                 onChange={(e) => setUpdatingStudent((prev) => ({ ...prev, image: e.target.value }))}
+                              ></textarea>
                            </div>
                         </div>
                         <div className={cx('modal-footer')}>
                            <div className={cx('btn-cancel')} onClick={closeModalAdd}>
                               Cancel
                            </div>
-                           <div className={cx('btn-submit')}>Add</div>
+                           <div className={cx('btn-submit')} onClick={addStudent}>
+                              Add
+                           </div>
                         </div>
                      </form>
                   </div>
@@ -300,30 +293,58 @@ function Student() {
             </div>
          )}
          {showModalEdit && (
-            <div className={cx('modal')} onClick={closeModalEdit}>
+            <div
+               className={cx('modal')}
+               onClick={() => {
+                  closeModalEdit();
+               }}
+            >
                <div className={cx('modal-overlay')}></div>
                <div className={cx('modal-content')} onClick={(e) => e.stopPropagation()}>
                   <div className={cx('modal-inner')}>
                      <form>
                         <div className={cx('modal-header')}>
                            <h4 className={cx('modal-title')}>Edit Student</h4>
-                           <AiOutlineClose className={cx('btn-close')} onClick={closeModalEdit} />
+                           <AiOutlineClose
+                              className={cx('btn-close')}
+                              onClick={() => {
+                                 closeModalEdit();
+                              }}
+                           />
                         </div>
                         <div className={cx('modal-body')}>
                            <div className={cx('form-group')}>
                               <label>Name:</label>
-                              <input type="text" placeholder="Enter Student's name" required></input>
+                              <input
+                                 type="text"
+                                 placeholder="Enter Student's name"
+                                 required
+                                 value={updatingStudent?.name || ''}
+                                 onChange={(e) => setUpdatingStudent((prev) => ({ ...prev, name: e.target.value }))}
+                              ></input>
                            </div>
                            <div className={cx('form-group')}>
                               <label>Image:</label>
-                              <textarea placeholder="Enter image's link" required></textarea>
+                              <textarea
+                                 placeholder="Enter image's link"
+                                 required
+                                 value={updatingStudent?.image || ''}
+                                 onChange={(e) => setUpdatingStudent((prev) => ({ ...prev, image: e.target.value }))}
+                              ></textarea>
                            </div>
                         </div>
                         <div className={cx('modal-footer')}>
-                           <div className={cx('btn-cancel')} onClick={closeModalEdit}>
+                           <div
+                              className={cx('btn-cancel')}
+                              onClick={() => {
+                                 closeModalEdit();
+                              }}
+                           >
                               Cancel
                            </div>
-                           <div className={cx('btn-save')}>Save</div>
+                           <div className={cx('btn-save')} onClick={updateStudent}>
+                              Save
+                           </div>
                         </div>
                      </form>
                   </div>
@@ -350,7 +371,9 @@ function Student() {
                            <div className={cx('btn-cancel')} onClick={closeModalDelete}>
                               Cancel
                            </div>
-                           <div className={cx('btn-delete')}>Delete</div>
+                           <div className={cx('btn-delete')} onClick={deleteStudent}>
+                              Delete
+                           </div>
                         </div>
                      </form>
                   </div>

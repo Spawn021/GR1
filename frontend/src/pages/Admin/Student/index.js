@@ -1,7 +1,8 @@
 //Student.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Student.module.scss';
+import { fetchStudents } from '~/services/students';
 // import { useAuth } from '~/store/AuthContext';
 // import { Navigate } from 'react-router-dom';
 import { IoAddCircle } from 'react-icons/io5';
@@ -15,6 +16,19 @@ function Student() {
    // if (!isLoggedIn) {
    //    return <Navigate to="/login" />;
    // }
+   const [students, setStudents] = useState([]);
+
+   useEffect(() => {
+      const fetchData = async () => {
+         const result = await fetchStudents('');
+         setStudents(result);
+
+         console.log('abcd', students);
+      };
+
+      fetchData();
+   }, []);
+
    const [showModalAdd, setShowModalAdd] = useState(false);
    const openModalAdd = () => {
       setShowModalAdd(true);

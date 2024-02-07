@@ -5,7 +5,12 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
 const mongoose = require("mongoose");
-const { instructorRouter, publicationRouter,studentRouter } = require("./routes/index");
+const {
+  instructorRouter,
+  publicationRouter,
+  studentRouter,
+  activityRouter,
+} = require("./routes/index");
 var app = express();
 
 mongoose
@@ -25,6 +30,7 @@ app.use(cookieParser());
 app.use("/api/instructors", instructorRouter);
 app.use("/api/publications", publicationRouter);
 app.use("/api/students", studentRouter);
+app.use("/api/activities", activityRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

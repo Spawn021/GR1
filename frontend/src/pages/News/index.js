@@ -2,38 +2,44 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './News.module.scss';
 import { BiChevronRight, BiChevronLeft } from 'react-icons/bi';
-import ItemNew from './components/ItemNew/ItemNew';
-import newsData from './data/newsData';
+import { fetchActivitiesHome } from '~/services/activities';
 
 const cx = classNames.bind(styles);
 
 function News() {
-   const [newsToShow, setNewsToShow] = useState(6);
+   const [activities, setActivities] = useState([6]);
+
+   useEffect(() => {
+      const fetchActivities = async () => {
+         try {
+            const result = await fetchActivitiesHome();
+            setActivities(result);
+         } catch (error) {
+            console.error('Error fetching activities:', error);
+         }
+      };
+
+      fetchActivities();
+   }, []);
+
+   const [displayActivity, setDisplayActivity] = useState(6);
    const [showMoreButton, setShowMoreButton] = useState(true);
    const [showLessButton, setShowLessButton] = useState(false);
-
    const toggleShowMore = () => {
-      const newNewsToShow = newsToShow + 3;
-      setNewsToShow(newNewsToShow);
+      const newDisplayActivity = displayActivity + 3;
+      setDisplayActivity(newDisplayActivity);
 
-      // Check if all news items are displayed
-      if (newNewsToShow >= newsData.length) {
+      if (newDisplayActivity >= activities.length) {
          setShowMoreButton(false);
          setShowLessButton(true);
       }
    };
 
    const toggleShowLess = () => {
-      // Chỉ hiển thị 6 item như lúc đầu
-      setNewsToShow(6);
-
-      // Ẩn nút "Thu gọn" và hiển thị nút "Xem thêm"
+      setDisplayActivity(6);
       setShowLessButton(false);
       setShowMoreButton(true);
    };
-
-   const allNews = newsData;
-
    return (
       <div className={cx('wrapper-activity')}>
          <div className={cx('container-activity')}>
@@ -41,11 +47,21 @@ function News() {
                <h2>TYPICAL ACTIVITIES</h2>
                {/* <p>These are the events and activities that marked MCN.CTLab during the year</p> */}
                <div className={cx('list-activity')}>
-                  {allNews.slice(0, newsToShow).map((news, index) => (
-                     <ItemNew key={news.id} id={news.id} img={news.img} actname={news.actname} actdate={news.actdate} />
-                  ))}
+                  {activities &&
+                     activities?.slice(0, displayActivity).map((acitivity) => (
+                        <div className={cx('item-activity')} key={acitivity._id}>
+                           <div className={cx('image-activity')}>
+                              <img className={cx('image')} src={acitivity.image}></img>
+                           </div>
+                           <div className={cx('info-activity')}>
+                              <div className={cx('name-activity')}>{acitivity.name}</div>
+                              <div className={cx('date-activity')}>{acitivity.date}</div>
+                           </div>
+                        </div>
+                     ))}
                </div>
             </div>
+
             {showMoreButton && (
                <div className={cx('show-more')}>
                   <button onClick={toggleShowMore}>

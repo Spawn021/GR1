@@ -4,6 +4,7 @@ import styles from './Home.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import SwiperMember from './components/SwiperMember/SwiperMember';
+import SwiperStudent from './components/SwiperStudent/SwiperStudent';
 import SwiperComponent from './components/Swiper/Swiper';
 import ListItemCount from './components/ListItemCount/ListItemCount';
 import LabTabs from './components/LabTabs/LabTabs';
@@ -23,12 +24,11 @@ function Home() {
       const fetchData = async () => {
          const result = await fetchInstructors('');
          setInstructors(result);
-         console.log(instructors);
       };
 
       fetchData();
    }, []);
-
+   console.log(instructors);
    const handleSearchChange = (event) => {
       setSearchTerm(event.target.value);
    };
@@ -36,7 +36,7 @@ function Home() {
    const filteredInstructors =
       instructors &&
       instructors.filter((instructor) => instructor.name.toLowerCase().includes(searchTerm.toLowerCase()));
-   console.log('ngu', filteredInstructors);
+   // console.log('ngu', filteredInstructors);
    return (
       <div className={cx('wrapper')}>
          <div className={cx('slide')}>
@@ -126,7 +126,7 @@ function Home() {
                </div>
                <div id="member" className={cx('panel-feedback')}>
                   <div className={cx('feedback-container')}>
-                     <h3>Member Of Lab</h3>
+                     <h3>Instructor Of Lab</h3>
                   </div>
                   <div className={cx('form-search')}>
                      <input
@@ -230,6 +230,12 @@ function Home() {
                         <h2>MCN.CTLab</h2>
                      </div>
                      <LabTabs />
+                  </div>
+                  <div className={cx('feedback-container')}>
+                     <h3>Student Of Lab</h3>
+                  </div>
+                  <div className={cx('slide-feedback')}>
+                     <SwiperStudent />
                   </div>
                </div>
             </div>

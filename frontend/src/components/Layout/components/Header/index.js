@@ -89,7 +89,7 @@ function Header() {
                            'active-class': activeLink === '/#member',
                         })}
                      >
-                        MEMBER
+                        INSTRUCTOR
                      </Link>
                      <div className={cx('header__member')}>
                         <ul className={cx('header__member-list')}>

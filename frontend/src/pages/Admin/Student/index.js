@@ -10,6 +10,9 @@ import {
    updateStudentApi,
    deleteStudentsApi,
 } from '~/services/students';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 // import { useAuth } from '~/store/AuthContext';
 // import { Navigate } from 'react-router-dom';
 import { IoAddCircle } from 'react-icons/io5';
@@ -26,16 +29,36 @@ function Student() {
    const [students, setStudents] = useState(null);
    const [isUpdateData, setIsUpdateData] = useState(true);
    const [isSelectCheckBoxes, setIsSelectCheckBoxes] = useState([]);
+
+   const [currentPage, setCurrentPage] = useState(1);
+   const [totalPages, setTotalPages] = useState(1);
+   const [totalDocs, setTotalDocs] = useState(0);
+   const itemsPerPage = 5;
    useEffect(() => {
       if (!isUpdateData) return;
       const fetchData = async () => {
-         const result = await fetchStudents();
-         setStudents(result);
-         setIsUpdateData(false);
+         try {
+            const result = await fetchStudents(currentPage, itemsPerPage);
+            setStudents(result.docs);
+            setTotalPages(result.totalPages);
+            setTotalDocs(result.totalDocs);
+            setIsUpdateData(false);
+         } catch (error) {
+            console.error('Error fetching students:', error);
+         }
       };
 
       fetchData();
-   }, [isUpdateData]);
+   }, [isUpdateData, currentPage]);
+
+   const handlePageChange = (page) => {
+      setCurrentPage(page);
+      setIsUpdateData(true);
+   };
+   const pages = [];
+   for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+   }
 
    const [updatingStudent, setUpdatingStudent] = useState(null);
 
@@ -70,31 +93,54 @@ function Student() {
    };
 
    const deleteStudent = async () => {
-      if (isSelectCheckBoxes.length > 0) {
-         await deleteStudentsApi(isSelectCheckBoxes);
-         setIsSelectCheckBoxes([]);
-      } else {
-         await deleteStudentApi(selectedId);
+      try {
+         if (isSelectCheckBoxes.length > 0) {
+            await deleteStudentsApi(isSelectCheckBoxes);
+            setIsSelectCheckBoxes([]);
+         } else {
+            await deleteStudentApi(selectedId);
+         }
+         setIsUpdateData(true);
+         closeModalDelete();
+         toast.success('Student deleted successfully');
+      } catch (error) {
+         toast.error('Failed to delete student');
       }
-      setIsUpdateData(true);
-      closeModalDelete();
    };
 
    const addStudent = async () => {
-      await createStudentApi(updatingStudent);
-      setIsUpdateData(true);
-      closeModalAdd();
+      if (!updatingStudent || !updatingStudent.name || !updatingStudent.image) {
+         toast.error('Please enter student name and image link');
+         return;
+      }
+      try {
+         await createStudentApi(updatingStudent);
+         setIsUpdateData(true);
+         closeModalAdd();
+         toast.success('Student added successfully');
+      } catch (error) {
+         toast.error('Failed to add student');
+      }
    };
 
    const updateStudent = async () => {
-      await updateStudentApi(updatingStudent);
-      setIsUpdateData(true);
-      closeModalEdit();
+      if (!updatingStudent || !updatingStudent.name || !updatingStudent.image) {
+         toast.error('Please enter student name and image link');
+         return;
+      }
+      try {
+         await updateStudentApi(updatingStudent);
+         setIsUpdateData(true);
+         closeModalEdit();
+         toast.success('Student updated successfully');
+      } catch (error) {
+         toast.error('Failed to update student');
+      }
    };
 
-   console.log('isCheck', isSelectCheckBoxes);
    return (
       <div className={cx('content')}>
+         <ToastContainer />
          <div className={cx('section')}>
             <span>Member </span>
             <span>/</span>
@@ -182,7 +228,9 @@ function Student() {
                                     </span>
                                  </td>
                                  <td>{student.name}</td>
-                                 <td>{student.image}</td>
+                                 <td>
+                                    <img className={cx('img-member')} src={student.image}></img>
+                                 </td>
 
                                  <td className={cx('icon-action')}>
                                     <div className={cx('icons-hover')} onClick={openModalEdit.bind(this, student._id)}>
@@ -207,43 +255,34 @@ function Student() {
                   </table>
                   <div className={cx('clearfix')}>
                      <div className={cx('hint-text')}>
-                        Showing <b>{students?.length}</b> out of <b>{students?.length}</b> entries
+                        Showing <b>{(currentPage - 1) * itemsPerPage + (students ? students.length : 0)}</b> out of{' '}
+                        <b>{totalDocs}</b> entries
                      </div>
-                     <ul className={cx('pagination')}>
-                        <li className={cx('page-item-pre')}>
-                           <a href="#">Previous</a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              1
-                           </a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              2
-                           </a>
-                        </li>
-                        <li className={cx('page-item-active')}>
-                           <a href="#" className={cx('page-link')}>
-                              3
-                           </a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              4
-                           </a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              5
-                           </a>
-                        </li>
-                        <li className={cx('page-item-next')}>
-                           <a href="#" className={cx('page-link')}>
-                              Next
-                           </a>
-                        </li>
-                     </ul>
+                     <div className={cx('pagination')}>
+                        <button
+                           className={cx('btn-pag')}
+                           onClick={() => handlePageChange(currentPage - 1)}
+                           disabled={currentPage === 1}
+                        >
+                           Previous
+                        </button>
+                        {pages.map((page) => (
+                           <button
+                              className={cx('btn-pag', { activee: currentPage === page })}
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                           >
+                              {page}
+                           </button>
+                        ))}
+                        <button
+                           className={cx('btn-pag')}
+                           onClick={() => handlePageChange(currentPage + 1)}
+                           disabled={currentPage === totalPages}
+                        >
+                           Next
+                        </button>
+                     </div>
                   </div>
                </div>
             </div>

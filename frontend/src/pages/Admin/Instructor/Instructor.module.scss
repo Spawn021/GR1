@@ -164,29 +164,27 @@
    display: flex;
    padding-left: 0;
    list-style: none;
+   justify-content: space-between;
 }
-.pagination li a {
+.btn-pag {
+   margin: 0 5px;
+   padding: 5px 10px;
    border: none;
-   font-size: 15px;
-   color: #999;
-   margin: 0 2px;
-   line-height: 30px;
-   border-radius: 2px !important;
-   text-align: center;
-   padding: 4px 9px;
-   text-decoration: none;
+   background-color: #f0f0f0;
+   cursor: pointer;
+   transition: background-color 0.3s ease;
 }
-.pagination li a:hover {
-   color: #666;
-   background-color: #e9ecef;
+.activee {
+   background-color: rgba(0, 0, 255, 0.5); // hoặc màu xanh mong muốn
+   color: white; // hoặc màu chữ phù hợp
+   // Các thuộc tính CSS khác bạn muốn áp dụng
 }
-.page-item-active .page-link {
-   color: #fff;
-   background: #03a9f4;
+.btn-pag:hover {
+   background-color: rgba(0, 0, 255, 0.5);
 }
-.page-item-active .page-link:hover {
-   color: #fff;
-   background: #0397d6;
+.btn-pag:disabled {
+   background-color: #e0e0e0;
+   cursor: not-allowed;
 }
 .hint-text {
    float: left;
@@ -460,4 +458,11 @@
 }
 .text-warning {
    color: #ffc71d !important;
+}
+.img-member {
+   width: 25px;
+   height: 25px;
+   object-fit: contain;
+
+   display: block;
 }

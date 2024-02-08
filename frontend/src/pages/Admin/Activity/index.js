@@ -1,9 +1,20 @@
 //Activity.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Activity.module.scss';
+import {
+   fetchActivities,
+   createActivityApi,
+   deleteActivitiesApi,
+   deleteActivityApi,
+   getActivity,
+   updateActivityApi,
+} from '~/services/activities';
 // import { useAuth } from '~/store/AuthContext';
 // import { Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import { IoAddCircle } from 'react-icons/io5';
 import { FaMinusCircle } from 'react-icons/fa';
 import { CiEdit } from 'react-icons/ci';
@@ -15,29 +26,120 @@ function Activity() {
    // if (!isLoggedIn) {
    //    return <Navigate to="/login" />;
    // }
+   const [activities, setActivities] = useState(null);
+   const [isUpdateData, setIsUpdateData] = useState(true);
+   const [isSelectCheckBoxes, setIsSelectCheckBoxes] = useState([]);
+
+   const [currentPage, setCurrentPage] = useState(1);
+   const [totalPages, setTotalPages] = useState(1);
+   const [totalDocs, setTotalDocs] = useState(0);
+   const itemsPerPage = 5;
+   useEffect(() => {
+      if (!isUpdateData) return;
+      const fetchData = async () => {
+         try {
+            const result = await fetchActivities(currentPage, itemsPerPage);
+            setActivities(result.docs);
+            setTotalPages(result.totalPages);
+            setTotalDocs(result.totalDocs);
+            setIsUpdateData(false);
+         } catch (error) {
+            console.error('Error fetching activities:', error);
+         }
+      };
+
+      fetchData();
+   }, [isUpdateData, currentPage]);
+
+   const handlePageChange = (page) => {
+      setCurrentPage(page);
+      setIsUpdateData(true);
+   };
+   const pages = [];
+   for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+   }
+
+   const [updatingActivity, setUpdatingActivity] = useState(null);
+
    const [showModalAdd, setShowModalAdd] = useState(false);
+   const [selectedId, setSelectedId] = useState(null);
    const openModalAdd = () => {
       setShowModalAdd(true);
    };
    const closeModalAdd = () => {
+      setUpdatingActivity(null);
       setShowModalAdd(false);
    };
    const [showModalDelete, setShowModalDelete] = useState(false);
-   const openModalDelete = () => {
+   const openModalDelete = (id) => {
+      setSelectedId(id);
       setShowModalDelete(true);
    };
    const closeModalDelete = () => {
+      setSelectedId(null);
       setShowModalDelete(false);
    };
    const [showModalEdit, setShowModalEdit] = useState(false);
-   const openModalEdit = () => {
+   const openModalEdit = (id) => {
+      setSelectedId(id);
+      setUpdatingActivity(activities.find((activity) => activity._id === id));
       setShowModalEdit(true);
    };
    const closeModalEdit = () => {
+      setSelectedId(null);
+      setUpdatingActivity(null);
       setShowModalEdit(false);
+   };
+
+   const deleteActivity = async () => {
+      try {
+         if (isSelectCheckBoxes.length > 0) {
+            await deleteActivitiesApi(isSelectCheckBoxes);
+            setIsSelectCheckBoxes([]);
+         } else {
+            await deleteActivityApi(selectedId);
+         }
+         setIsUpdateData(true);
+         closeModalDelete();
+         toast.success('Activity deleted successfully');
+      } catch (error) {
+         toast.error('Failed to delete activity');
+      }
+   };
+
+   const addActivity = async () => {
+      if (!updatingActivity || !updatingActivity.name || !updatingActivity.image || !updatingActivity.date) {
+         toast.error("Please enter activity's name ,image and date");
+         return;
+      }
+      try {
+         await createActivityApi(updatingActivity);
+         setIsUpdateData(true);
+         closeModalAdd();
+         toast.success('Activity added successfully');
+      } catch (error) {
+         toast.error('Failed to add activity');
+      }
+   };
+
+   const updateActivity = async () => {
+      if (!updatingActivity || !updatingActivity.name || !updatingActivity.image || !updatingActivity.date) {
+         toast.error("Please enter activity's name ,image and date");
+         return;
+      }
+      try {
+         await updateActivityApi(updatingActivity);
+         setIsUpdateData(true);
+         closeModalEdit();
+         toast.success('Activity updated successfully');
+      } catch (error) {
+         toast.error('Failed to update activity');
+      }
    };
    return (
       <div className={cx('content')}>
+         <ToastContainer />
          <div className={cx('container')}>
             <div className={cx('table-responsive')}>
                <div className={cx('table-wrapper')}>
@@ -69,7 +171,21 @@ function Activity() {
                         <tr>
                            <th>
                               <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="selectAll" />
+                                 <input
+                                    type="checkbox"
+                                    id="selectAll"
+                                    checked={
+                                       isSelectCheckBoxes.length !== 0 &&
+                                       isSelectCheckBoxes.length === activities?.length
+                                    }
+                                    onChange={(e) => {
+                                       if (e.target.checked) {
+                                          setIsSelectCheckBoxes(activities.map((activity) => activity._id));
+                                       } else {
+                                          setIsSelectCheckBoxes([]);
+                                       }
+                                    }}
+                                 />
                                  <label for="selectAll"></label>
                               </span>
                            </th>
@@ -80,172 +196,89 @@ function Activity() {
                         </tr>
                      </thead>
                      <tbody>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox1" name="options[]" value="1" />
-                                 <label for="checkbox1"></label>
-                              </span>
-                           </td>
-                           <td>Thomas Hardy</td>
-                           <td>thomashardy@mail.com</td>
-                           <td>89 Chiaroscuro Rd, Portland, USA</td>
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox2" name="options[]" value="1" />
-                                 <label for="checkbox2"></label>
-                              </span>
-                           </td>
-                           <td>Dominique Perrier</td>
-                           <td>dominiqueperrier@mail.com</td>
-                           <td>Obere Str. 57, Berlin, Germany</td>
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox3" name="options[]" value="1" />
-                                 <label for="checkbox3"></label>
-                              </span>
-                           </td>
-                           <td>Maria Anders</td>
-                           <td>mariaanders@mail.com</td>
-                           <td>25, rue Lauriston, Paris, France</td>
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox4" name="options[]" value="1" />
-                                 <label for="checkbox4"></label>
-                              </span>
-                           </td>
-                           <td>Fran Wilson</td>
-                           <td>franwilson@mail.com</td>
-                           <td>C/ Araquil, 67, Madrid, Spain</td>
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td>
-                              <span className={cx('custom-checkbox')}>
-                                 <input type="checkbox" id="checkbox5" name="options[]" value="1" />
-                                 <label for="checkbox5"></label>
-                              </span>
-                           </td>
-                           <td>Martin Blank</td>
-                           <td>martinblank@mail.com</td>
-                           <td>Via Monte Bianco 34, Turin, Italy</td>
-                           <td className={cx('icon-action')}>
-                              <div className={cx('icons-hover')} onClick={openModalEdit}>
-                                 <i className={cx('icons-edit')}>
-                                    <CiEdit />
-                                 </i>
-                                 <div className={cx('edit')}>Edit</div>
-                              </div>
-                              <div className={cx('icons-hover')} onClick={openModalDelete}>
-                                 <i className={cx('icons-delete')}>
-                                    <MdDelete />
-                                 </i>
-                                 <div className={cx('delete')}>Delete</div>
-                              </div>
-                           </td>
-                        </tr>
+                        {activities &&
+                           activities?.map((activity) => (
+                              <tr key={activity._id}>
+                                 <td>
+                                    <span className={cx('custom-checkbox')}>
+                                       <input
+                                          type="checkbox"
+                                          id={`checkbox${activity._id}`}
+                                          checked={isSelectCheckBoxes.includes(activity._id)}
+                                          onChange={(e) => {
+                                             console.log('e', activity._id, e.target.checked);
+                                             if (e.target.checked) {
+                                                setIsSelectCheckBoxes((prev) => {
+                                                   const newArray = [...prev];
+                                                   return newArray.concat(activity._id);
+                                                });
+                                             } else {
+                                                setIsSelectCheckBoxes((prev) => {
+                                                   const newArray = [...prev];
+                                                   return newArray.filter((id) => id !== activity._id);
+                                                });
+                                             }
+                                          }}
+                                       />
+                                       <label for={`checkbox${activity._id}`}></label>
+                                    </span>
+                                 </td>
+                                 <td>{activity.name}</td>
+                                 <td>
+                                    <img className={cx('img-member')} src={activity.image}></img>
+                                 </td>
+                                 <td>{activity.date}</td>
+                                 <td className={cx('icon-action')}>
+                                    <div className={cx('icons-hover')} onClick={openModalEdit.bind(this, activity._id)}>
+                                       <i className={cx('icons-edit')}>
+                                          <CiEdit />
+                                       </i>
+                                       <div className={cx('edit')}>Edit</div>
+                                    </div>
+                                    <div
+                                       className={cx('icons-hover')}
+                                       onClick={openModalDelete.bind(this, activity._id)}
+                                    >
+                                       <i className={cx('icons-delete')}>
+                                          <MdDelete />
+                                       </i>
+                                       <div className={cx('delete')}>Delete</div>
+                                    </div>
+                                 </td>
+                              </tr>
+                           ))}
                      </tbody>
                   </table>
                   <div className={cx('clearfix')}>
                      <div className={cx('hint-text')}>
-                        Showing <b>5</b> out of <b>25</b> entries
+                        Showing <b>{(currentPage - 1) * itemsPerPage + (activities ? activities.length : 0)}</b> out of{' '}
+                        <b>{totalDocs}</b> entries
                      </div>
-                     <ul className={cx('pagination')}>
-                        <li className={cx('page-item-pre')}>
-                           <a href="#">Previous</a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              1
-                           </a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              2
-                           </a>
-                        </li>
-                        <li className={cx('page-item-active')}>
-                           <a href="#" className={cx('page-link')}>
-                              3
-                           </a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              4
-                           </a>
-                        </li>
-                        <li className={cx('page-item')}>
-                           <a href="#" className={cx('page-link')}>
-                              5
-                           </a>
-                        </li>
-                        <li className={cx('page-item-next')}>
-                           <a href="#" className={cx('page-link')}>
-                              Next
-                           </a>
-                        </li>
-                     </ul>
+                     <div className={cx('pagination')}>
+                        <button
+                           className={cx('btn-pag')}
+                           onClick={() => handlePageChange(currentPage - 1)}
+                           disabled={currentPage === 1}
+                        >
+                           Previous
+                        </button>
+                        {pages.map((page) => (
+                           <button
+                              className={cx('btn-pag', { activee: currentPage === page })}
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                           >
+                              {page}
+                           </button>
+                        ))}
+                        <button
+                           className={cx('btn-pag')}
+                           onClick={() => handlePageChange(currentPage + 1)}
+                           disabled={currentPage === totalPages}
+                        >
+                           Next
+                        </button>
+                     </div>
                   </div>
                </div>
             </div>
@@ -263,23 +296,40 @@ function Activity() {
                         <div className={cx('modal-body')}>
                            <div className={cx('form-group')}>
                               <label>Name:</label>
-                              <input type="text" placeholder="Enter activity's name" required></input>
+                              <input
+                                 type="text"
+                                 placeholder="Enter activity's name"
+                                 required
+                                 value={updatingActivity?.name || ''}
+                                 onChange={(e) => setUpdatingActivity((prev) => ({ ...prev, name: e.target.value }))}
+                              ></input>
                            </div>
                            <div className={cx('form-group')}>
                               <label>Image:</label>
-                              <textarea placeholder="Enter link image" required></textarea>
+                              <textarea
+                                 placeholder="Enter image's link"
+                                 required
+                                 value={updatingActivity?.image || ''}
+                                 onChange={(e) => setUpdatingActivity((prev) => ({ ...prev, image: e.target.value }))}
+                              ></textarea>
                            </div>
                            <div className={cx('form-group')}>
                               <label>Date:</label>
-                              <br></br>
-                              <input type="date"></input>
+                              <textarea
+                                 placeholder="Enter date's activity"
+                                 required
+                                 value={updatingActivity?.date || ''}
+                                 onChange={(e) => setUpdatingActivity((prev) => ({ ...prev, date: e.target.value }))}
+                              ></textarea>
                            </div>
                         </div>
                         <div className={cx('modal-footer')}>
                            <div className={cx('btn-cancel')} onClick={closeModalAdd}>
                               Cancel
                            </div>
-                           <div className={cx('btn-submit')}>Add</div>
+                           <div className={cx('btn-submit')} onClick={addActivity}>
+                              Add
+                           </div>
                         </div>
                      </form>
                   </div>
@@ -287,35 +337,67 @@ function Activity() {
             </div>
          )}
          {showModalEdit && (
-            <div className={cx('modal')} onClick={closeModalEdit}>
+            <div
+               className={cx('modal')}
+               onClick={() => {
+                  closeModalEdit();
+               }}
+            >
                <div className={cx('modal-overlay')}></div>
                <div className={cx('modal-content')} onClick={(e) => e.stopPropagation()}>
                   <div className={cx('modal-inner')}>
                      <form>
                         <div className={cx('modal-header')}>
                            <h4 className={cx('modal-title')}>Edit Activity</h4>
-                           <AiOutlineClose className={cx('btn-close')} onClick={closeModalEdit} />
+                           <AiOutlineClose
+                              className={cx('btn-close')}
+                              onClick={() => {
+                                 closeModalEdit();
+                              }}
+                           />
                         </div>
                         <div className={cx('modal-body')}>
                            <div className={cx('form-group')}>
                               <label>Name:</label>
-                              <input type="text" placeholder="Enter activity's name" required></input>
+                              <input
+                                 type="text"
+                                 placeholder="Enter activity's name"
+                                 required
+                                 value={updatingActivity?.name || ''}
+                                 onChange={(e) => setUpdatingActivity((prev) => ({ ...prev, name: e.target.value }))}
+                              ></input>
                            </div>
                            <div className={cx('form-group')}>
                               <label>Image:</label>
-                              <textarea placeholder="Enter link image" required></textarea>
+                              <textarea
+                                 placeholder="Enter image's link"
+                                 required
+                                 value={updatingActivity?.image || ''}
+                                 onChange={(e) => setUpdatingActivity((prev) => ({ ...prev, image: e.target.value }))}
+                              ></textarea>
                            </div>
                            <div className={cx('form-group')}>
                               <label>Date:</label>
-                              <br></br>
-                              <input type="date"></input>
+                              <textarea
+                                 placeholder="Enter date's activity"
+                                 required
+                                 value={updatingActivity?.date || ''}
+                                 onChange={(e) => setUpdatingActivity((prev) => ({ ...prev, date: e.target.value }))}
+                              ></textarea>
                            </div>
                         </div>
                         <div className={cx('modal-footer')}>
-                           <div className={cx('btn-cancel')} onClick={closeModalEdit}>
+                           <div
+                              className={cx('btn-cancel')}
+                              onClick={() => {
+                                 closeModalEdit();
+                              }}
+                           >
                               Cancel
                            </div>
-                           <div className={cx('btn-save')}>Save</div>
+                           <div className={cx('btn-save')} onClick={updateActivity}>
+                              Save
+                           </div>
                         </div>
                      </form>
                   </div>
@@ -342,7 +424,9 @@ function Activity() {
                            <div className={cx('btn-cancel')} onClick={closeModalDelete}>
                               Cancel
                            </div>
-                           <div className={cx('btn-delete')}>Delete</div>
+                           <div className={cx('btn-delete')} onClick={deleteActivity}>
+                              Delete
+                           </div>
                         </div>
                      </form>
                   </div>

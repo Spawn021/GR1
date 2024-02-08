@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const mongoosePaginate = require("mongoose-paginate-v2");
 const instructorSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -46,6 +46,6 @@ const instructorSchema = new mongoose.Schema({
     required: true,
   },
 });
-
+instructorSchema.plugin(mongoosePaginate);
 const Instructor = mongoose.model("Instructor", instructorSchema);
 module.exports = { Instructor };

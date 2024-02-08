@@ -8,7 +8,7 @@ function DefaultLayout({ children }) {
 
    switch (location.pathname) {
       case '/':
-         contentHeight = '3560px';
+         contentHeight = '4300px';
          break;
       default:
          contentHeight = 'auto';

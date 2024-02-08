@@ -2,6 +2,34 @@ const express = require("express");
 const router = express.Router();
 const { Student } = require("../model/student");
 
+router.get("/member", async (req, res) => {
+  const students = await Student.find(null, {
+    name: 1,
+    _id: 1,
+    image: 1,
+  });
+  res.status(200).json({ students });
+});
+
+// GET: Retrieve all students
+router.get("/", async (req, res) => {
+  const { page = 1, limit = 5 } = req.query;
+  try {
+    const options = {
+      page,
+      limit,
+      collation: { locale: "en" },
+    };
+
+    const students = await Student.paginate({}, options);
+    res.status(200).json(students);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching students", error: error.message });
+  }
+});
+
 // POST: Create a new student
 router.post("/", async (req, res) => {
   try {
@@ -20,18 +48,6 @@ router.post("/", async (req, res) => {
     res
       .status(500)
       .json({ message: "Error creating the student", error: error.message });
-  }
-});
-
-// GET: Retrieve all students
-router.get("/", async (req, res) => {
-  try {
-    const students = await Student.find({});
-    res.status(200).json(students);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error fetching students", error: error.message });
   }
 });
 

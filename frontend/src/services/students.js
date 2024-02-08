@@ -1,6 +1,9 @@
 import { fetchApi } from './index';
-export const fetchStudents = async () => {
-   return await fetchApi(`/students`);
+export const fetchStudents = async (page, limit) => {
+   return await fetchApi(`/students?page=${page}&limit=${limit}`);
+};
+export const fetchStudentMembers = async () => {
+   return (await fetchApi(`/students/member`)).students;
 };
 export const getStudent = async (id) => {
    return await fetchApi(`/students/${id}`);

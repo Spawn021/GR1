@@ -31,10 +31,15 @@ function Admin() {
       { path: 'instructor', element: <Instructor /> },
       { path: 'publication', element: <PublicationAdmin /> },
    ]);
-   // const { isLoggedIn } = useAuth();
-   // if (!isLoggedIn) {
-   //    return <Navigate to="/login" />;
-   // }
+   const { isLoggedIn } = useAuth();
+   const { logout } = useAuth(); // Access logout function from useAuth
+
+   const handleLogout = () => {
+      logout(); // Call logout function
+   };
+   if (!isLoggedIn) {
+      return <Navigate to="/login" />;
+   }
    return (
       <div className={cx('wrapper')}>
          <div className={cx('aside_left')}>
@@ -113,7 +118,9 @@ function Admin() {
                <div className={cx('icon-menu')}>
                   <AiOutlineMenuFold />
                </div>
-               <button className={cx('logout')}>Logout</button>
+               <button className={cx('logout')} onClick={handleLogout}>
+                  Logout
+               </button>
             </div>
             <div className={cx('content')}>{childRoutes}</div>
          </div>

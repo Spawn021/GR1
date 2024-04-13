@@ -12,6 +12,10 @@ import YearIcon from '../../assets/images/icons/nam.svg';
 import SchoolIcon from '../../assets/images/icons/truong.svg';
 import CourseIcon from '../../assets/images/icons/khoa-luyen.svg';
 import StdIcon from '../../assets/images/icons/hocvien.svg';
+import Icon1WhyChoose from '../../assets/images/icons/icon1-why-choose.svg';
+import Icon2WhyChoose from '../../assets/images/icons/icon2-why-choose.svg';
+import Icon3WhyChoose from '../../assets/images/icons/icon3-why-choose.svg';
+import IconYoutube from '../../assets/images/icons/youtube.webp';
 import { FaFacebook } from 'react-icons/fa';
 import { fetchInstructors } from '~/services/instructors';
 import { Link } from 'react-router-dom';
@@ -64,11 +68,7 @@ function Home() {
                         <div className={cx('why-choose-item')}>
                            <div className={cx('item-top')}>
                               <span>
-                                 <img
-                                    className={cx('item-image')}
-                                    src="https://onthisinhvien.com/images/icon/otsv/icon1-why-choose.svg"
-                                    alt="Icon"
-                                 ></img>
+                                 <img className={cx('item-image')} src={Icon1WhyChoose} alt="Icon"></img>
                               </span>
                            </div>
                            <h3>Em không biết môn này học cái gì?</h3>
@@ -80,11 +80,7 @@ function Home() {
                         <div className={cx('why-choose-item')}>
                            <div className={cx('item-top')}>
                               <span>
-                                 <img
-                                    className={cx('item-image')}
-                                    src="https://onthisinhvien.com/images/icon/otsv/icon2-why-choose.svg"
-                                    alt="Icon"
-                                 ></img>
+                                 <img className={cx('item-image')} src={Icon2WhyChoose} alt="Icon"></img>
                               </span>
                            </div>
                            <h3>Em không biết bắt đầu học từ đâu?</h3>
@@ -96,11 +92,7 @@ function Home() {
                         <div className={cx('why-choose-item')}>
                            <div className={cx('item-top')}>
                               <span>
-                                 <img
-                                    className={cx('item-image')}
-                                    src="https://onthisinhvien.com/images/icon/otsv/icon3-why-choose.svg"
-                                    alt="Icon"
-                                 ></img>
+                                 <img className={cx('item-image')} src={Icon3WhyChoose} alt="Icon"></img>
                               </span>
                            </div>
                            <h3>Em không biết hỏi bài ai?</h3>
@@ -170,10 +162,7 @@ function Home() {
                            <div className={cx('box-item')}>
                               <div className={cx('item-social')}>
                                  <div className={cx('image-social')}>
-                                    <img
-                                       src="https://onthisinhvien.com/_next/image?url=%2Fimages%2Ficon%2Fotsv%2Fyoutube.png&w=1920&q=75"
-                                       alt="Youtube"
-                                    ></img>
+                                    <img src={IconYoutube} alt="Youtube"></img>
                                     <div className={cx('number-social')}>
                                        <svg
                                           className={cx('eye-icon')}

@@ -87,7 +87,7 @@
    color: #ec1f24;
    transition: 0.5s;
 }
-@media (max-width: 576px) {
+@media (max-width: 739px) {
    .list-item-count .item-count .number-count {
       font-size: 17px;
       margin: 0;
@@ -96,4 +96,6 @@
       width: 140px;
       height: 154px;
    }
+}
+@media (min-width: 740px) and (max-width: 1023px) {
 }

@@ -22,11 +22,14 @@
    color: #fff;
    background-color: #e10422;
 }
-@media (max-width: 576px) {
+
+@media (min-width: 740px) and (max-width: 1023px) {
    .mySwiperSlide .swiper-pagination {
-      margin-top: 60px;
+      margin-top: 65px;
    }
-   .mySwiperSlide .swiper-pagination-bullet {
-      margin: 0 20px !important;
+}
+@media (max-width: 739px) {
+   .mySwiperSlide .swiper-pagination {
+      margin-top: 65px;
    }
 }

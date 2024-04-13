@@ -33,9 +33,9 @@ export default function SwiperMember() {
 
    return (
       <Swiper
-         slidesPerView={4}
+         slidesPerView={2}
          spaceBetween={20}
-         slidesPerGroup={4}
+         slidesPerGroup={2}
          loop={true}
          pagination={pagination}
          autoplay={{
@@ -44,6 +44,18 @@ export default function SwiperMember() {
          }}
          modules={[Pagination]}
          className="mySwiperSlide"
+         breakpoints={{
+            // khi màn hình rộng hơn 740px
+            740: {
+               slidesPerView: 3,
+               slidesPerGroup: 3,
+            },
+            // khi màn hình rộng hơn 1024px
+            1024: {
+               slidesPerView: 4,
+               slidesPerGroup: 4,
+            },
+         }}
       >
          {members &&
             members.map((member) => (

@@ -1,20 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-
+import { HiBars3 } from 'react-icons/hi2';
 import Logo from '~/assets/images/logo.jpg';
 import { fetchInstructorMembers } from '~/services/instructors';
 const cx = classNames.bind(styles);
-function Header() {
+function Header({ activeLink, handleLinkClick }) {
    const [isScrolled, setIsScrolled] = useState(false);
    const [members, setMembers] = useState(null);
-   const [activeLink, setActiveLink] = useState(null);
+   const mobileMenuRef = useRef(null);
 
-   const handleLinkClick = (link) => {
-      setActiveLink(link);
-      window.scrollTo(0, 0);
+   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+   useEffect(() => {
+      const handleOutsideClick = (event) => {
+         if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+            setIsMobileMenuOpen(false);
+         }
+      };
+
+      document.addEventListener('mousedown', handleOutsideClick);
+
+      return () => {
+         document.removeEventListener('mousedown', handleOutsideClick);
+      };
+   }, []);
+   const handleMobileMenuToggle = () => {
+      setIsMobileMenuOpen(!isMobileMenuOpen);
    };
+
    useEffect(() => {
       const getMembers = async () => {
          const members = await fetchInstructorMembers();
@@ -63,10 +77,13 @@ function Header() {
                </ul>
                <ul className={cx('header__navbar-list')}>
                   <li className={cx('header__navbar-item')}>
+                     <HiBars3 className={cx('header__navbar-bars')} onClick={handleMobileMenuToggle} />
+                  </li>
+                  <li className={cx('header__navbar-item')}>
                      <Link
                         to="/"
                         onClick={() => handleLinkClick('/')}
-                        className={cx('header__navbar-item-link', {
+                        className={cx('header__navbar-item-link', 'header__navbar-home-page', {
                            'active-class': activeLink === '/',
                         })}
                      >
@@ -154,6 +171,110 @@ function Header() {
                         to="/contact"
                         onClick={() => handleLinkClick('/contact')}
                         className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/contact',
+                        })}
+                        style={{ textDecoration: 'none' }}
+                     >
+                        CONTACT
+                     </Link>
+                  </li>
+               </ul>
+               <ul
+                  ref={mobileMenuRef}
+                  className={cx('navbar-responsive-list', { 'navbar-responsive-list--open': isMobileMenuOpen })}
+               >
+                  <li className={cx('navbar-responsive-item')}>
+                     <Link
+                        to="/"
+                        onClick={() => handleLinkClick('/')}
+                        className={cx('navbar-responsive-item-link', {
+                           'active-class': activeLink === '/',
+                        })}
+                     >
+                        INTRODUCTION
+                     </Link>
+                  </li>
+                  <li
+                     className={cx(
+                        'navbar-responsive-item',
+                        'navbar-responsive-item--has-list',
+                        'navbar-responsive-item--separate',
+                     )}
+                  >
+                     {/* eslint-disable-next-line */}
+                     <Link
+                        smooth
+                        to="/#member"
+                        onClick={() => handleLinkClick('/#member')}
+                        className={cx('navbar-responsive-item-link', {
+                           'active-class': activeLink === '/#member',
+                        })}
+                     >
+                        INSTRUCTOR
+                     </Link>
+                     <div className={cx('header__member')}>
+                        <ul className={cx('header__member-list')}>
+                           {members &&
+                              members.map((member) => (
+                                 <li className={cx('header__member-item')} key={member._id}>
+                                    {/* eslint-disable-next-line */}
+                                    <Link
+                                       to={`/member/${member._id}`}
+                                       onClick={() => window.scrollTo(0, 0)}
+                                       className={cx('header__member-item-name')}
+                                    >
+                                       {member.name}
+                                    </Link>
+                                 </li>
+                              ))}
+                        </ul>
+                     </div>
+                  </li>
+                  <li className={cx('navbar-responsive-item')}>
+                     <Link
+                        smooth
+                        to="/research/main_research"
+                        onClick={() => handleLinkClick('/research')}
+                        className={cx('navbar-responsive-item-link', {
+                           'active-class': activeLink === '/research',
+                        })}
+                        style={{ textDecoration: 'none' }}
+                     >
+                        RESEARCH
+                     </Link>
+                  </li>
+                  <li className={cx('navbar-responsive-item')}>
+                     <Link
+                        smooth
+                        to="/publication"
+                        onClick={() => handleLinkClick('/publication')}
+                        className={cx('navbar-responsive-item-link', {
+                           'active-class': activeLink === '/publication',
+                        })}
+                        style={{ textDecoration: 'none' }}
+                     >
+                        PUBLICATION
+                     </Link>
+                  </li>
+                  <li className={cx('navbar-responsive-item')}>
+                     <Link
+                        smooth
+                        to="/news"
+                        onClick={() => handleLinkClick('/news')}
+                        className={cx('navbar-responsive-item-link', {
+                           'active-class': activeLink === '/news',
+                        })}
+                        style={{ textDecoration: 'none' }}
+                     >
+                        NEWS
+                     </Link>
+                  </li>
+                  <li className={cx('navbar-responsive-item')}>
+                     <Link
+                        smooth
+                        to="/contact"
+                        onClick={() => handleLinkClick('/contact')}
+                        className={cx('navbar-responsive-item-link', {
                            'active-class': activeLink === '/contact',
                         })}
                         style={{ textDecoration: 'none' }}

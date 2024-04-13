@@ -1,25 +1,19 @@
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
 import Header from '~/components/Layout/components/Header';
 import Footer from './Footer';
 
 function DefaultLayout({ children }) {
-   const location = useLocation();
-   let contentHeight = 'auto';
+   const [activeLink, setActiveLink] = useState(null);
 
-   switch (location.pathname) {
-      case '/':
-         contentHeight = '4300px';
-         break;
-      default:
-         contentHeight = 'auto';
-         break;
-   }
-
+   const handleLinkClick = (link) => {
+      setActiveLink(link);
+      window.scrollTo(0, 0);
+   };
    return (
       <div>
-         <Header />
-         <div style={{ minHeight: contentHeight }}>{children}</div>
-         <Footer />
+         <Header activeLink={activeLink} handleLinkClick={handleLinkClick} />
+         <div>{children}</div>
+         <Footer activeLink={activeLink} handleLinkClick={handleLinkClick} />
       </div>
    );
 }

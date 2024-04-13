@@ -21,8 +21,3 @@
    opacity: 1;
    background-color: #e10422;
 }
-@media (max-width: 576px) {
-   .swiper-pagination {
-      margin-top: 60px;
-   }
-}

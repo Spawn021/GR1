@@ -82,7 +82,7 @@ function Contact() {
                   referrerPolicy="no-referrer-when-downgrade"
                ></iframe>
             </div>
-            <div className={cx('row')}>
+            {/* <div className={cx('row')}>
                <img className={cx('img-contact')} src={imageS2} alt="s2" />
                <div className={cx('input-form')}>
                   <div className={cx('input-box')}>
@@ -150,7 +150,7 @@ function Contact() {
                      <p className={cx('error-submit')}>One or more fields have an error. Please check and try again!</p>
                   )}
                </div>
-            </div>
+            </div> */}
          </div>
       </div>
    );

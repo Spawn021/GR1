@@ -1,11 +1,16 @@
+import React, { useState, useEffect } from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import classNames from 'classnames/bind';
 import styles from './Footer.module.scss';
-import { Link } from 'react-router-dom';
 import { MdOutlineLocationOn } from 'react-icons/md';
+import IconYtb from '../../../../assets/images/icons/youtube.svg';
+import IconFb from '../../../../assets/images/icons/fb.svg';
+import IconTiktok from '../../../../assets/images/icons/tiktok.svg';
+import IconIns from '../../../../assets/images/icons/ins.webp';
 
 const cx = classNames.bind(styles);
 
-function Footer() {
+function Footer({ activeLink, handleLinkClick }) {
    return (
       <header className={cx('wrapper')}>
          <div className={cx('footer-panel')}>
@@ -22,40 +27,50 @@ function Footer() {
 
                         <div className={cx('small-column-item-right')}>
                            <div className={cx('big-text')}>Tiện ích</div>
-                           <Link to="/" style={{ textDecoration: 'none' }} onClick={() => window.scrollTo(0, 0)}>
-                              <div className={cx('small-text', 'text-hover')}>Introduction</div>
-                           </Link>
                            <Link
-                              smooth
-                              to="/#member"
+                              to="/"
                               style={{ textDecoration: 'none' }}
-                              onClick={() => window.scrollTo(0, 0)}
+                              onClick={() => handleLinkClick('/')}
+                              className={cx('small-text', 'text-hover', { 'active-class': activeLink === '/' })}
                            >
-                              <div className={cx('small-text', 'text-hover')}>Member</div>
+                              Introduction
                            </Link>
+                           <a
+                              href="/#member"
+                              style={{ textDecoration: 'none' }}
+                              onClick={() => handleLinkClick('/#member')}
+                              className={cx('small-text', 'text-hover', { 'active-class': activeLink === '/#member' })}
+                           >
+                              Member
+                           </a>
                            <Link
                               smooth
                               to="/research/main_research"
                               style={{ textDecoration: 'none' }}
-                              onClick={() => window.scrollTo(0, 0)}
+                              onClick={() => handleLinkClick('/research')}
+                              className={cx('small-text', 'text-hover', { 'active-class': activeLink === '/research' })}
                            >
-                              <div className={cx('small-text', 'text-hover')}>Research</div>
+                              Research
                            </Link>
                            <Link
                               smooth
                               to="/publication"
                               style={{ textDecoration: 'none' }}
-                              onClick={() => window.scrollTo(0, 0)}
+                              onClick={() => handleLinkClick('/publication')}
+                              className={cx('small-text', 'text-hover', {
+                                 'active-class': activeLink === '/publication',
+                              })}
                            >
-                              <div className={cx('small-text', 'text-hover')}>Publication</div>
+                              Publication
                            </Link>
                            <Link
                               smooth
                               to="/news"
                               style={{ textDecoration: 'none' }}
-                              onClick={() => window.scrollTo(0, 0)}
+                              onClick={() => handleLinkClick('/news')}
+                              className={cx('small-text', 'text-hover', { 'active-class': activeLink === '/news' })}
                            >
-                              <div className={cx('small-text', 'text-hover')}>News</div>
+                              News
                            </Link>
                         </div>
                      </div>
@@ -69,10 +84,10 @@ function Footer() {
                         <div className={cx('small-column-item-right')}>
                            <div className={cx('big-text')}>Kết nối với chúng tôi</div>
                            <div className={cx('list-logo')}>
-                              <img src="https://onthisinhvien.com/images/icon/otsv/youtube.svg"></img>
-                              <img src="https://onthisinhvien.com/images/icon/otsv/fb.svg"></img>
-                              <img src="https://onthisinhvien.com/images/icon/otsv/tiktok.svg"></img>
-                              <img src="https://onthisinhvien.com/_next/image?url=%2Fimages%2Ficon%2Fotsv%2Fins.png&w=1920&q=75"></img>
+                              <img src={IconYtb}></img>
+                              <img src={IconIns}></img>
+                              <img src={IconFb}></img>
+                              <img src={IconTiktok}></img>
                            </div>
                         </div>
                      </div>

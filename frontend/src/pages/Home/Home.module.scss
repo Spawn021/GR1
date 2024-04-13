@@ -1,10 +1,10 @@
 .wrapper {
-   height: 435px;
    width: 100%;
    background-color: var(--background-color);
 }
 .slide {
-   width: 1390px;
+   // width: 1390px;
+   width: 90vw;
    height: 100%;
    display: block;
    margin: 0 auto;
@@ -14,7 +14,6 @@
 .achive {
    background-color: var(--background-color);
    width: 100%;
-   height: 270px;
 }
 .slogan {
    line-height: 1.2;
@@ -29,7 +28,7 @@
 .static-wrapper {
    display: flex;
    justify-content: center;
-   width: 900px;
+   width: 59vw;
    height: 190px;
    margin: 0 auto;
    margin-top: 25px;
@@ -41,7 +40,7 @@
    background-size: 100%;
    background-repeat: no-repeat;
    padding-bottom: 20px;
-   height: 1000px;
+
    padding-top: 10px;
    background-color: var(--background-color);
 }
@@ -84,7 +83,7 @@
 }
 .form-search {
    position: relative;
-   width: 550px;
+   width: calc(43vw - 2px);
    height: 50px;
    display: flex;
    justify-content: center;
@@ -109,7 +108,7 @@
 }
 .button-search {
    position: absolute;
-   top: 8px;
+   top: 5px;
    right: 12px;
    border: 0;
    background: 0;
@@ -133,7 +132,7 @@
 }
 .why-choose-container {
    text-align: center;
-   width: 1170px;
+   width: 76vw;
    margin: 0 auto;
 }
 .sub-title {
@@ -157,12 +156,12 @@
 .sub-title p {
    font-size: 15px;
    font-weight: 500;
-   margin-bottom: 70px;
+   margin-bottom: calc(5vw - 6px);
 }
 .why-choose-list-item {
    margin: 0 auto;
    margin-top: 20px;
-   width: 1170px;
+   width: 76vw;
    display: flex;
    // justify-content: center;
 }
@@ -170,6 +169,7 @@
    flex-grow: 0;
    max-width: 33.333333%;
    flex-basis: 33.333333%;
+   padding: 0px 30px;
 }
 .item-top {
    width: 100px;
@@ -190,7 +190,7 @@
    font-size: 16px;
    line-height: 24px;
    font-weight: 400;
-   width: 330px !important;
+   // width: 330px !important;
    margin: 0 auto;
    display: block;
 }
@@ -205,11 +205,11 @@
    padding-bottom: 40px;
 }
 .panel-iframe {
-   width: 66%;
+   width: 75%;
    height: 491px;
 }
 .feedback-container {
-   width: 1170px;
+   width: calc(75vw + 8px);
    margin: 0 auto;
 }
 .feedback-container h3 {
@@ -221,16 +221,17 @@
    text-transform: uppercase;
 }
 .slide-feedback {
-   width: 1120px;
+   width: calc(75vw + 8px);
    margin: 0 auto;
    padding: 15px 20px 0 !important;
 }
 .wrapper-social {
    background-size: cover;
-   height: 80vh;
+   // height: 80vh;
    background-position: 50%;
    background-image: url(https://storage.googleapis.com/onthisinhvien.appspot.com/images/otsvv/social.png);
    display: flex;
+   padding-bottom: 68px;
 }
 .container-social {
    width: 100%;
@@ -268,7 +269,7 @@
    line-height: 16px;
 }
 .wrapper-item {
-   width: 955px;
+   width: calc(65vw + 3px);
    display: flex;
    justify-content: space-around;
    margin: 0 auto;
@@ -284,12 +285,14 @@
    text-align: center;
    padding: 40px;
    border-radius: 15px;
-   width: 384px;
-   height: 282px;
+   width: calc(30vw + 3px);
+   // height: calc(26vw + 9px);
+   height: 290px;
 }
 .image-social {
    display: flex;
    flex-direction: column;
+   align-items: center;
 }
 .image-social img {
    width: 304px;
@@ -321,7 +324,7 @@
    font-weight: 600;
 }
 .subscriber {
-   width: 250px;
+   width: calc(17vw + 2px);
    height: 55px;
    background: #bd0409;
    position: relative;
@@ -332,7 +335,7 @@
 .subscriber-text {
    position: absolute;
    background: linear-gradient(180deg, #ed1e24, #ff4045);
-   width: 250px;
+   width: calc(17vw + 2px);
    height: 48px;
    padding: 15px 15px;
    border-radius: 15px;
@@ -367,7 +370,7 @@
    font-size: 26px;
 }
 .wrapper-mission .name {
-   width: 944px;
+   width: 61vw;
    margin: 0 auto;
 }
 .mission {
@@ -380,7 +383,7 @@
    padding-bottom: 10px;
 }
 .container-activity {
-   width: 1170px;
+   width: calc(75vw + 8px);
    margin: 0 auto;
 }
 .title-activity h2 {
@@ -467,4 +470,123 @@
 .icon-chev {
    font-size: 20px;
    margin-left: 10px;
+}
+@media (max-width: 739px) {
+   .slogan {
+      font-size: 15px;
+   }
+   .static-wrapper {
+      justify-content: space-around;
+      width: 100%;
+   }
+   .sub-title h2 {
+      font-size: 20px;
+   }
+   .sub-title h5 {
+      font-size: 20px;
+   }
+   .why-choose-list-item {
+      display: flex;
+      flex-direction: column;
+   }
+   .why-choose-item {
+      max-width: 100%;
+      flex-basis: 100%;
+      padding-bottom: 25px;
+   }
+   .item-top {
+      width: 15vw;
+      height: 15vw;
+      background: #e91111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 25px;
+      margin: auto;
+   }
+   .why-choose-item h3 {
+      font-weight: 600;
+      font-size: 16px;
+      margin: 15px 0px;
+   }
+   .why-choose-item span {
+      font-size: 14px;
+      line-height: 24px;
+      font-weight: 400;
+      // width: 330px !important;
+      margin: 0 auto;
+      display: block;
+   }
+   .panel-iframe {
+      width: 90%;
+      height: 250px;
+   }
+   .why-choose {
+      padding-bottom: 0px;
+   }
+   .feedback-container h3 {
+      font-size: 25px;
+      margin-top: 15px;
+   }
+   .form-search {
+      width: calc(66vw - 2px);
+      height: 42px;
+      margin-bottom: 0px;
+   }
+   .slide-feedback {
+      width: calc(80vw + 8px);
+   }
+   .title {
+      font-size: 2.5vw;
+   }
+   .wrapper-item {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+   }
+   .item-social {
+      width: calc(55vw + 3px);
+   }
+   .box-item {
+      margin-bottom: 20px;
+   }
+   .subscriber {
+      width: 155px;
+   }
+   .subscriber-text {
+      width: 155px;
+   }
+}
+@media (min-width: 740px) and (max-width: 1023px) {
+   .static-wrapper {
+      justify-content: space-around;
+      width: 100%;
+   }
+   .sub-title h2 {
+      font-size: 25px;
+   }
+   .sub-title h5 {
+      font-size: 25px;
+   }
+   .panel-iframe {
+      width: 80%;
+   }
+   .form-search {
+      width: calc(58vw - 2px);
+      height: 42px;
+      margin-bottom: 0px;
+   }
+   .slide-feedback {
+      width: calc(80vw + 8px);
+   }
+   .title {
+      font-size: 22.5px;
+   }
+   .wrapper-item {
+      width: calc(90vw + 3px);
+   }
+   .item-social {
+      width: calc(40vw + 3px);
+      height: 275px;
+   }
 }

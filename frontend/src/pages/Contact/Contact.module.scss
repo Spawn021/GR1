@@ -136,3 +136,27 @@ textarea:focus {
    margin-bottom: 20px;
    color: #2a354e;
 }
+@media (max-width: 739px) {
+   .item-box p {
+      font-size: 11.5px;
+   }
+   .contact-container {
+      width: 90%;
+   }
+}
+@media (min-width: 740px) and (max-width: 1024px) {
+   .item-box p {
+      font-size: 11.5px;
+   }
+   .item-box img {
+      width: 33%;
+   }
+   .contact-container {
+      width: 85%;
+   }
+}
+@media (min-width: 1025px) and (max-width: 1363px) {
+   .item-box p {
+      font-size: 15px;
+   }
+}

@@ -6,7 +6,7 @@ import styles from './Login.module.scss'; // Import CSS module
 import classNames from 'classnames/bind';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { fetchLogin } from '~/services/admin';
 import LeftImg from '~/assets/images/login.jpg';
 import { FaUser } from 'react-icons/fa';
 import { FaLock } from 'react-icons/fa';
@@ -19,18 +19,23 @@ function Login() {
    const { login } = useAuth();
    const navigate = useNavigate();
 
-   const handleSubmit = (event) => {
+   const handleSubmit = async (event) => {
       event.preventDefault();
 
-      const hardcodedUsername = 'admin';
-      const hardcodedPassword = '12345';
-
-      if (username === hardcodedUsername && password === hardcodedPassword) {
-         toast.success('Logged in successfully');
-         login();
-         navigate('/admin');
-      } else {
-         toast.error('Invalid username or password');
+      try {
+         const result = await fetchLogin(username, password);
+         console.log('result', result.status);
+         if (result.status) {
+            toast.success('Logged in successfully');
+            login();
+            setTimeout(() => {
+               navigate('/admin');
+            }, 2000);
+         } else {
+            toast.error('Invalid username or password');
+         }
+      } catch (error) {
+         console.error('Error fetching activities:', error);
       }
    };
 

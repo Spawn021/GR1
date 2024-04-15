@@ -12,6 +12,7 @@ const {
   publicationRouter,
   studentRouter,
   activityRouter,
+  adminRouter,
 } = require("./routes/index");
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/instructors", instructorRouter);
 app.use("/api/publications", publicationRouter);
 app.use("/api/students", studentRouter);
 app.use("/api/activities", activityRouter);
+app.use("/api/admin", adminRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

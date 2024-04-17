@@ -41,7 +41,15 @@ function Footer({ activeLink, handleLinkClick }) {
                               onClick={() => handleLinkClick('/#member')}
                               className={cx('small-text', 'text-hover', { 'active-class': activeLink === '/#member' })}
                            >
-                              Member
+                              Instructor
+                           </a>
+                           <a
+                              href="/#student"
+                              style={{ textDecoration: 'none' }}
+                              onClick={() => handleLinkClick('/#student')}
+                              className={cx('small-text', 'text-hover', { 'active-class': activeLink === '/#student' })}
+                           >
+                              Student
                            </a>
                            <Link
                               smooth

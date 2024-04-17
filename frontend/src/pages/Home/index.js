@@ -220,10 +220,11 @@ function Home() {
                      </div>
                      <LabTabs />
                   </div>
+
                   <div className={cx('feedback-container')}>
                      <h3>Student Of Lab</h3>
                   </div>
-                  <div className={cx('slide-feedback')}>
+                  <div id="student" className={cx('slide-feedback')}>
                      <SwiperStudent />
                   </div>
                </div>

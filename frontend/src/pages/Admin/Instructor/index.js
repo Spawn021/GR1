@@ -220,7 +220,7 @@ function Instructor() {
                            <th>Research Interests</th>
                            <th>Research Projects</th>
                            <th>Study Interests</th>
-                           <th>Prize</th>
+                           <th>Prize / Current Project</th>
                            <th>Teaching</th>
                            <th>Actions</th>
                         </tr>
@@ -487,9 +487,9 @@ function Instructor() {
                               ></textarea>
                            </div>
                            <div className={cx('form-group')}>
-                              <label>Prizes:</label>
+                              <label>Prizes / Current Projects:</label>
                               <textarea
-                                 placeholder="Enter Instructor's prizes"
+                                 placeholder="Enter Instructor's prizes or current projects"
                                  value={
                                     updatingInstructor && updatingInstructor.prizes
                                        ? updatingInstructor.prizes.join('\n')
@@ -676,9 +676,9 @@ function Instructor() {
                               ></textarea>
                            </div>
                            <div className={cx('form-group')}>
-                              <label>Prizes:</label>
+                              <label>Prizes / Current Projects:</label>
                               <textarea
-                                 placeholder="Enter Instructor's prizes"
+                                 placeholder="Enter Instructor's prizes or current projects"
                                  value={
                                     updatingInstructor && updatingInstructor.prizes
                                        ? updatingInstructor.prizes.join('\n')

@@ -178,3 +178,16 @@ li {
    width: 30px;
    margin-bottom: 20px;
 }
+@media (max-width: 1200px) and (min-width: 740px) {
+   .member-container {
+      width: 80%;
+   }
+}
+@media (max-width: 739px) {
+   .member-container {
+      width: 90%;
+   }
+   .right-column {
+      width: 55%;
+   }
+}

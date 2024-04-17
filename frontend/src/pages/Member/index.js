@@ -83,7 +83,7 @@ function Member() {
                   </ul>
                </div>
                <div className={cx('item-right-column')}>
-                  <div className={cx('prize')}>GIẢI THƯỞNG</div>
+                  <div className={cx('prize')}>GIẢI THƯỞNG / DỰ ÁN HIỆN TẠI</div>
                   <ul>
                      {member?.prizes.map((prize) => (
                         <li className={cx('item')}>{prize}</li>

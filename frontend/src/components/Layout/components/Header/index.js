@@ -126,6 +126,25 @@ function Header({ activeLink, handleLinkClick }) {
                         </ul>
                      </div>
                   </li>
+                  <li
+                     className={cx(
+                        'header__navbar-item',
+                        'header__navbar-item--has-list',
+                        'header__navbar-item--separate',
+                     )}
+                  >
+                     {/* eslint-disable-next-line */}
+                     <Link
+                        smooth
+                        to="/#student"
+                        onClick={() => handleLinkClick('/#student')}
+                        className={cx('header__navbar-item-link', {
+                           'active-class': activeLink === '/#student',
+                        })}
+                     >
+                        STUDENT
+                     </Link>
+                  </li>
                   <li className={cx('header__navbar-item')}>
                      <Link
                         smooth
@@ -229,6 +248,25 @@ function Header({ activeLink, handleLinkClick }) {
                               ))}
                         </ul>
                      </div>
+                  </li>
+                  <li
+                     className={cx(
+                        'navbar-responsive-item',
+                        'navbar-responsive-item--has-list',
+                        'navbar-responsive-item--separate',
+                     )}
+                  >
+                     {/* eslint-disable-next-line */}
+                     <Link
+                        smooth
+                        to="/#student"
+                        onClick={() => handleLinkClick('/#student')}
+                        className={cx('navbar-responsive-item-link', {
+                           'active-class': activeLink === '/#student',
+                        })}
+                     >
+                        STUDENT
+                     </Link>
                   </li>
                   <li className={cx('navbar-responsive-item')}>
                      <Link
